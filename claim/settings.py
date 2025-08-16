@@ -77,8 +77,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Added for your frontend
     "http://localhost:5179",
     "http://10.10.13.32:5179",
+    "https://win-a-claim-ai.netlify.app"
     
 ]
+
+CSRF_TRUSTED_ORIGINS = ["winaclaim.com","72.60.30.162"]
+
 CORS_ALLOW_ALL_ORIGINS = False 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_HEADERS = [
@@ -92,7 +96,7 @@ CORS_ALLOWED_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = ["*"]
 
 ROOT_URLCONF = 'claim.urls'
 
