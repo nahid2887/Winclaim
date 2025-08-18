@@ -28,11 +28,14 @@ class CustomRegisterSerializer(serializers.ModelSerializer):
         user = CustomUser(
             email=validated_data['email'],
             full_name=validated_data['full_name'],
-            address = validated_data.get('address'),
+            address=validated_data.get('address'),
             phone_number=validated_data.get('phone_number'),
         )
         user.set_password(validated_data['password'])
         user.save()
+        # Ensure profile is created with is_trial=True (default)
+        from .models import Profile
+        Profile.objects.get_or_create(user=user, defaults={"is_trial": True})
         return user
 
 
@@ -134,18 +137,23 @@ class ProfileSerializer(serializers.ModelSerializer):
         return data
 
 class CustomUserSerializer(serializers.ModelSerializer):
+
+
     profile = ProfileSerializer()
+    date_joined = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
 
     class Meta:
         model = CustomUser
-        fields = ['email', 'full_name', 'address', 'phone_number', 'profile']
+        fields = ['email', 'full_name', 'address', 'phone_number', 'profile', 'date_joined']
 
     def to_representation(self, instance):
-        """Ensure profile exists before serialization"""
-        # Create profile if it doesn't exist
+        # Ensure profile exists before serialization
         if not hasattr(instance, 'profile') or instance.profile is None:
             Profile.objects.create(user=instance)
-        return super().to_representation(instance)
+        data = super().to_representation(instance)
+        # Add signup_date with time (for API response compatibility)
+        data["signup_date"] = data["date_joined"]
+        return data
 
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('profile', None)
@@ -216,4 +224,12 @@ class GoogleLoginSerializer(serializers.Serializer):
             defaults={'full_name': full_name}
         )
 
-        return user, created
+        from .models import Profile
+        profile, prof_created = Profile.objects.get_or_create(user=user, defaults={"is_trial": True})
+        # If user was just created, ensure is_trial is True
+        if created or prof_created:
+            profile.is_trial = True
+            profile.save(update_fields=["is_trial"])
+
+        # Return user and is_trial status
+        return user, profile.is_trial

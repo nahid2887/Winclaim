@@ -62,7 +62,7 @@ class StaffOnlyUserList(APIView):
         sort_by = request.GET.get("sort_by")
 
         # preload profile to avoid N+1
-        users = CustomUser.objects.filter(is_staff=False).select_related("profile")
+        users = CustomUser.objects.filter(is_staff=False).select_related("profile").order_by("-date_joined")
 
         # ----- search -----
         if search:

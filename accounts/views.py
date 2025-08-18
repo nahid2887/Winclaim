@@ -72,7 +72,7 @@ def get_user_subscription_info(user):
         'is_subscription': is_subscription,
         'has_active_subscription': has_active_subscription,
         'subscription_type': subscription_type,
-        'signup_date': user.date_joined.strftime('%Y-%m-%d') if user.date_joined else None
+        'signup_date': user.date_joined.strftime('%Y-%m-%d %H:%M:%S') if user.date_joined else None
     }
 
 
@@ -296,7 +296,7 @@ def update_profile(request):
             user_data['profile'] = {}
 
         user_data['profile'].update({
-            'signup_date': subscription_info['signup_date'],
+            'signup_date': user.date_joined.strftime('%Y-%m-%d %H:%M:%S') if user.date_joined else None,
             'is_subscription': subscription_info['is_subscription'],
             'is_trial': subscription_info['is_trial'],
             'has_active_subscription': subscription_info['has_active_subscription'],
@@ -330,7 +330,7 @@ def update_profile(request):
                 user_data['profile'] = {}
 
             user_data['profile'].update({
-                'signup_date': subscription_info['signup_date'],
+                'signup_date': user.date_joined.strftime('%Y-%m-%d %H:%M:%S') if user.date_joined else None,
                 'is_subscription': subscription_info['is_subscription'],
                 'is_trial': subscription_info['is_trial'],
                 'has_active_subscription': subscription_info['has_active_subscription'],
