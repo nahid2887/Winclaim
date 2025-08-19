@@ -61,12 +61,11 @@ def get_user_subscription_info(user):
     # Check if user has active subscription
     try:
         user_subscription = user.package.filter(is_active=True).first()
-        has_active_subscription = bool(user_subscription)
+        has_active_subscription = user_subscription.is_active_status if user_subscription else False
         subscription_type = user_subscription.package_type if user_subscription else None
-    except:
+    except Exception:
         has_active_subscription = False
         subscription_type = None
-    
     return {
         'is_trial': is_trial,
         'is_subscription': is_subscription,

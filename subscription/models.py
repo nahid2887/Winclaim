@@ -62,6 +62,13 @@ class UserSubscriptionModel(models.Model):
     def __str__(self):
         return f"{self.user} - package type: {self.package_type}"
     
+    @property
+    def is_active_status(self):
+        """
+        Returns True if the subscription is active, False otherwise.
+        """
+        return self.is_active
+    
 class Total_revenue(models.Model):
     total_revenue = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # USD
     
