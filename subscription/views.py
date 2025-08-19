@@ -98,7 +98,7 @@ logger = logging.getLogger(__name__)
 def stripe_webhook(request):
     payload = request.body
     sig_header = request.META.get('HTTP_STRIPE_SIGNATURE')
-    endpoint_secret = "whsec_V3Yh2zDOHoVqWO9P3nLuY0vWTi46O9Im"  # ✅ Use env var in prod
+    endpoint_secret = "whsec_e2YKOR2yYuPcX2ofVUnXGUB3FDKn6c9o"  # ✅ Use env var in prod
 
     try:
         event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
