@@ -77,11 +77,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Added for your frontend
     "http://localhost:5179",
     "http://10.10.13.32:5179",
-    "https://win-a-claim-ai.netlify.app"
+    "https://win-a-claim-ai.netlify.app",
+    "https://front.winaclaim.com"
     
 ]
 
-CSRF_TRUSTED_ORIGINS = ["https://72.60.30.162"]
+CSRF_TRUSTED_ORIGINS = ["https://72.60.30.162", "https://api.winaclaim.com"]
 
 CORS_ALLOW_ALL_ORIGINS = False 
 CORS_ALLOW_CREDENTIALS = True
