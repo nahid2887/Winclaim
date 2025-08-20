@@ -26,14 +26,6 @@ COPY . /app/
 # Create directory for static files
 RUN mkdir -p /app/staticfiles
 
-# Make entrypoint script executable
-RUN chmod +x /app/entrypoint.sh
-
-# Expose port
-EXPOSE 9000
-
-# Set entrypoint
-ENTRYPOINT ["/app/entrypoint.sh"].0
 
 # Run the application
 CMD ["python", "manage.py", "runserver", "0.0.0.0:9000"]
