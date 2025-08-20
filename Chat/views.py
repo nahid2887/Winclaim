@@ -272,59 +272,56 @@ class ChatStreamAPIView(APIView):
         )
 
         full_response = ""
+        pdf_url = None
         try:
             # Create user-specific local folder for uploaded documents
             user_folder_name = f"user_{request.user.user_id}_{str(session.session_id)[:8]}"
             user_upload_path = os.path.join('media', 'chat_uploads', user_folder_name)
-            
-            # Ensure the user's upload directory exists
             os.makedirs(user_upload_path, exist_ok=True)
-            
+
             # Get user's claim information (you can get this from user profile or insurance claims)
             try:
-                # Try to get user's latest insurance claim for context
                 from userdashboard.models import InsuranceClaim
                 latest_claim = InsuranceClaim.objects.filter(user=request.user).order_by('-id').first()
                 if latest_claim:
                     claim_no = latest_claim.id
                 else:
-                    claim_no = request.user.user_id  # Fallback to user ID
+                    claim_no = request.user.user_id
             except:
                 claim_no = request.user.user_id
-            
-            # Use your chatbootAi.py main function
+
             from .chatbootAi import run_benji_chat
-            
-            # Get or initialize session history
+
             if str(session.session_id) not in self.session_histories:
                 self.session_histories[str(session.session_id)] = []
-            
+
             # Get the most recent upload_id for this user (if any)
             try:
                 latest_upload = UserClaimUpload.objects.filter(
-                    user=request.user, 
+                    user=request.user,
                     is_active=True
                 ).order_by('-updated_at').first()
                 upload_id = str(latest_upload.upload_id) if latest_upload else None
-            except:
+                # Get PDF URL using Django's storage system
+                if latest_upload and hasattr(latest_upload, 'pdf_file') and latest_upload.pdf_file:
+                    pdf_url = latest_upload.pdf_file.url
+            except Exception:
                 upload_id = None
-            
-            # Use the new simplified function signature
+                pdf_url = None
+
             response_text, updated_history = run_benji_chat(
                 user=request.user,
                 user_question=user_input,
                 chat_history_list=self.session_histories[str(session.session_id)],
                 upload_id=upload_id
             )
-            
-            # Update session history
+
             self.session_histories[str(session.session_id)] = updated_history
             full_response = response_text
-            
+
         except Exception as e:
             return Response({"error": f"Chat processing error: {str(e)}"}, status=500)
 
-        # Save AI message
         ai_msg = ChatMessage.objects.create(
             session=session,
             user=request.user,
@@ -332,12 +329,16 @@ class ChatStreamAPIView(APIView):
             content=full_response
         )
 
-        return Response({
+        response_data = {
             "session": ChatSessionSerializer(session).data,
             "user_message": ChatMessageSerializer(user_msg).data,
             "ai_message": ChatMessageSerializer(ai_msg).data,
             "all_messages": ChatMessageSerializer(session.messages.order_by("timestamp"), many=True).data
-        })
+        }
+        if pdf_url:
+            response_data["pdf_url"] = pdf_url
+
+        return Response(response_data)
 
     def get(self, request):
         session_id = request.GET.get("session_id")
