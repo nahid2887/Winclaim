@@ -204,11 +204,12 @@ class StaffInsuranceClaimDetailView(generics.RetrieveUpdateDestroyAPIView):
 def terms_policy_views(request):
     user = request.user
 
+
     if request.method == 'GET':
-        terms_policy = TermsaAndPolicy.objects.last()
-        if not terms_policy:
+        terms_policies = TermsaAndPolicy.objects.all().order_by('-created_at')
+        if not terms_policies.exists():
             return Response({"message": "No terms and policies found"}, status=status.HTTP_404_NOT_FOUND)
-        serializer = TermsaAndPolicySerializer(terms_policy)
+        serializer = TermsaAndPolicySerializer(terms_policies, many=True)
         return Response(serializer.data)
 
     # Only staff users can create or update
@@ -244,10 +245,10 @@ def terms_policy_condition(request):
     user = request.user   
 
     if request.method == 'GET':
-        terms_policy = TermsaAndcondition.objects.last()
-        if not terms_policy:
-            return Response({"message": "No terms and policies found"}, status=status.HTTP_404_NOT_FOUND)
-        serializer = TermsaAndconditionserializer(terms_policy)
+        terms_conditions = TermsaAndcondition.objects.all().order_by('-created_at')
+        if not terms_conditions.exists():
+            return Response({"message": "No terms and conditions found"}, status=status.HTTP_404_NOT_FOUND)
+        serializer = TermsaAndconditionserializer(terms_conditions, many=True)
         return Response(serializer.data)
 
     # Only staff users can create or update
