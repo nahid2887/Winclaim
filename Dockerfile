@@ -33,7 +33,7 @@ RUN chmod +x /app/entrypoint.sh
 EXPOSE 9000
 
 # Set entrypoint
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"].0
 
 # Run the application
 CMD ["python", "manage.py", "runserver", "0.0.0.0:9000"]

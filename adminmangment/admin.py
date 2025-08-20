@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import TermsaAndPolicy, TermsaAndcondition
 
-# Register your models here.
+admin.site.register(TermsaAndPolicy)
+admin.site.register(TermsaAndcondition)
