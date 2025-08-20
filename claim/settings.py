@@ -81,8 +81,8 @@ CORS_ALLOWED_ORIGINS = [
     "https://win-a-claim-ai.netlify.app",
     "https://front.winaclaim.com",
     "https://charbel.72-60-30-162.sslip.io",
-    "http://localhost:5179/",
-    "https://admin.winaclaim.com/",
+    "http://localhost:5179",
+    "https://admin.winaclaim.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = ["https://72.60.30.162", "https://api.winaclaim.com"]
