@@ -70,19 +70,19 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     
 ]
-# CORS_ALLOWED_ORIGINS = [
-#     "http://10.10.13.27:9000",
-#     "http://10.10.13.31:5173",
-#     "http://localhost:3000",
-#     "http://127.0.0.1:3000",
-#     "http://localhost:5173",  # Added for your frontend
-#     "http://localhost:5179",
-#     "http://10.10.13.32:5179",
-#     "https://win-a-claim-ai.netlify.app",
-#     "https://front.winaclaim.com",
-#     "https://charbel.72-60-30-162.sslip.io"
+CORS_ALLOWED_ORIGINS = [
+    "http://10.10.13.27:9000",
+    "http://10.10.13.31:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:5173",  # Added for your frontend
+    "http://localhost:5179",
+    "http://10.10.13.32:5179",
+    "https://win-a-claim-ai.netlify.app",
+    "https://front.winaclaim.com",
+    "https://charbel.72-60-30-162.sslip.io"
     
-# ]
+]
 
 CSRF_TRUSTED_ORIGINS = ["https://72.60.30.162", "https://api.winaclaim.com"]
 
