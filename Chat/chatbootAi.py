@@ -107,6 +107,7 @@ def get_default_claim_info(user_obj=None):
 
 # Load PDF documents from a directory
 def load_pdfs(pdf_path_or_dir):
+    print(pdf_path_or_dir)
     documents = []
     if os.path.isdir(pdf_path_or_dir):
         for filename in os.listdir(pdf_path_or_dir):
