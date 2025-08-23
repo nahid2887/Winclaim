@@ -3,4 +3,4 @@
 .venv
 venv
 env
-media/chat_uploads/
+media/chat_uploads/*
