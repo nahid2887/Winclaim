@@ -275,9 +275,11 @@ class ChatStreamAPIView(APIView):
         pdf_url = None
 
         try:
+            from django.conf import settings
             # Create user-specific local folder for uploaded documents
             user_folder_name = f"user_{request.user.user_id}_{str(session.session_id)[:8]}"
-            user_upload_path = os.path.join('media', 'chat_uploads', user_folder_name)
+            relative_upload_path = os.path.join('chat_uploads', user_folder_name)
+            user_upload_path = os.path.join(settings.MEDIA_ROOT, relative_upload_path)
             os.makedirs(user_upload_path, exist_ok=True)
 
             # Get user's claim information (you can get this from user profile or insurance claims)
