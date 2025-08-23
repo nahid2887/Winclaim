@@ -240,7 +240,7 @@ def model_init():
     llm = ChatOpenAI(
         model="gpt-4o",
         temperature=0.3,
-        max_tokens=2048,
+        # max_tokens=2048,
         openai_api_key=os.environ.get('OPENAI_API_KEY')
     )
 
@@ -250,6 +250,16 @@ def chaining(insurance_company: str, policy_number: str, policy_report_number: s
     load_dotenv()
     global_store = "index"
     local_store = os.path.join(global_store, local_folder_name)
+
+    # ---------------------------------------------------------------------------------------
+    # Always reset (delete) the vectorstore directories before building for every user input
+    import shutil
+    if os.path.exists(os.path.join(global_store, "faiss_store")):
+        shutil.rmtree(os.path.join(global_store, "faiss_store"))
+    if os.path.exists(os.path.join(local_store, "faiss_store")):
+        shutil.rmtree(os.path.join(local_store, "faiss_store"))
+    # ---------------------------------------------------------------------------------------
+    
     global_docs = load_pdfs(global_knowledge)
     global_vectorstore = build_or_load_vectorstore(global_docs, os.path.join(global_store, "faiss_store"))
     local_docs = load_pdfs(local_knowledge)
@@ -257,28 +267,21 @@ def chaining(insurance_company: str, policy_number: str, policy_report_number: s
     llm = model_init()
     prompt_template = prompt(insurance_company, policy_number, policy_report_number, adjuster_name, adjuster_phone, claim_number, adjuster_email, user_full_name, email_address, user_phone_no)
     def format_inputs(inputs):
-        # If local_vectorstore is None, skip local context
+        # Always perform a similarity search for every user input (top 7 local, top 5 global)
+        local_results = []
+        global_results = []
         if local_vectorstore is not None:
-            local_docs = local_vectorstore.as_retriever(search_kwargs={"k": 7}).invoke(inputs["question"])
-            local_context = "\n\n".join([doc.page_content for doc in local_docs]) if local_docs else ""
-        else:
-            local_context = ""
+            local_results = local_vectorstore.similarity_search(inputs["question"], k=7)
         if global_vectorstore is not None:
-            global_docs = global_vectorstore.as_retriever(search_kwargs={"k": 4}).invoke(inputs["question"])
-            global_context = "\n\n".join([doc.page_content for doc in global_docs])
+            global_results = global_vectorstore.similarity_search(inputs["question"], k=5)
+        local_context = "\n\n".join([doc.page_content for doc in local_results]) if local_results else ""
+        global_context = "\n\n".join([doc.page_content for doc in global_results]) if global_results else ""
+        if local_context.strip() or global_context.strip():
+            context_text = f"[Local knowledge (User uploaded pdf context): {local_folder_name}]\n" + (local_context if local_context else "(No local context found.)") + "\n\n[Global knowledge]\n" + (global_context if global_context else "(No global context found.)")
         else:
-            global_context = ""
-        
-        if local_context.strip():
-            combined_context = (
-                f"[Local knowledge (User uploaded pdf context): {local_folder_name}]\n" + local_context + "\n\n[Global knowledge]\n" + global_context
-            )
-        else:
-            combined_context = (
-                f"[Local knowledge (User uploaded pdf context): {local_folder_name}]\n(No local context found. Only global context is available.)\n\n[Global knowledge]\n" + global_context
-            )
+            context_text = "(No relevant context found.)"
         return {
-            "context": combined_context,
+            "context": context_text,
             "chat_history": inputs.get("chat_history", ""),
             "question": inputs["question"],
             "insurance_company": inputs["insurance_company"],
