@@ -268,13 +268,14 @@ def chaining(insurance_company: str, policy_number: str, policy_report_number: s
             global_context = "\n\n".join([doc.page_content for doc in global_docs])
         else:
             global_context = ""
+        
         if local_context.strip():
             combined_context = (
-                f"[Local knowledge: {local_folder_name}]\n" + local_context + "\n\n[Global knowledge]\n" + global_context
+                f"[Local knowledge (User uploaded pdf context): {local_folder_name}]\n" + local_context + "\n\n[Global knowledge]\n" + global_context
             )
         else:
             combined_context = (
-                f"[Local knowledge: {local_folder_name}]\n(No local context found. Only global context is available.)\n\n[Global knowledge]\n" + global_context
+                f"[Local knowledge (User uploaded pdf context): {local_folder_name}]\n(No local context found. Only global context is available.)\n\n[Global knowledge]\n" + global_context
             )
         return {
             "context": combined_context,

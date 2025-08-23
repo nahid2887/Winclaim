@@ -278,7 +278,7 @@ class ChatStreamAPIView(APIView):
             from django.core.files.storage import default_storage
             from django.conf import settings
             # Create user-specific local folder for uploaded documents using Django's storage system
-            user_folder_name = f"user_{request.user.user_id}_{str(session.session_id)[:8]}"
+            user_folder_name = f"user_{request.user.user_id}"
             relative_upload_path = os.path.join('chat_uploads', user_folder_name)
             user_upload_path = os.path.join(settings.MEDIA_ROOT, relative_upload_path)
 
