@@ -281,8 +281,6 @@ class ChatStreamAPIView(APIView):
             user_folder_name = f"user_{request.user.user_id}_{str(session.session_id)[:8]}"
             relative_upload_path = os.path.join('chat_uploads', user_folder_name)
             user_upload_path = os.path.join(settings.MEDIA_ROOT, relative_upload_path)
-            if not default_storage.exists(relative_upload_path):
-                default_storage.makedirs(relative_upload_path)
 
             # Get user's claim information (you can get this from user profile or insurance claims)
             try:
