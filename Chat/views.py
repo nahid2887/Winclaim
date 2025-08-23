@@ -273,6 +273,7 @@ class ChatStreamAPIView(APIView):
 
         full_response = ""
         pdf_url = None
+
         try:
             # Create user-specific local folder for uploaded documents
             user_folder_name = f"user_{request.user.user_id}_{str(session.session_id)[:8]}"
