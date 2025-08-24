@@ -128,7 +128,7 @@ def stripe_webhook(request):
             end_date = (
                 now + timedelta(days=30) if subscription.package_type == "Monthly"
                 else now + timedelta(days=365) if subscription.package_type == "Yearly"
-                else now + timedelta(days=90)
+                else now + timedelta(days=45)
             )
 
             UserSubscriptionModel.objects.filter(user=user).delete()
