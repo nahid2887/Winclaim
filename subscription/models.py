@@ -11,9 +11,9 @@ def generate_random_id():
 
 class SubscriptionModel(models.Model):
     class PackageType(models.TextChoices):
-        One_Time= 'One_Time', 'One_Time'
-        MONTHLY = 'Monthly', 'Monthly'
-        YEARLY = 'Yearly', 'Yearly'
+        One_Time= 'Essential Plan', 'Essential Plan'
+        MONTHLY = 'Pro Plan - Monthly', 'Pro Plan - Monthly'
+        YEARLY = 'Pro Plan - Annual', 'Pro Plan - Annual'
 
     class PackageStatus(models.TextChoices):
         ACTIVE = 'Active', 'Active'
@@ -21,17 +21,17 @@ class SubscriptionModel(models.Model):
 
     id = models.CharField(
         primary_key=True,
-        max_length=10,
+        max_length=50,
         default=generate_random_id,
         # editable=False
     )
     package_type = models.CharField(
-        max_length=10,
+        max_length=50,
         choices=PackageType.choices,
         default=PackageType.One_Time,
     )
     package_status = models.CharField(
-        max_length=10,
+        max_length=50,
         choices=PackageStatus.choices,
         default=PackageStatus.POSTPONE
     )
@@ -43,13 +43,13 @@ class SubscriptionModel(models.Model):
 
 class UserSubscriptionModel(models.Model):
     class PackageType(models.TextChoices):
-        One_Time = 'One_Time', 'One_Time'
-        MONTHLY = 'Monthly', 'Monthly'
-        YEARLY = 'Yearly', 'Yearly'
+        One_Time = 'Essential Plan', 'Essential Plan'
+        MONTHLY = 'Pro Plan - Monthly', 'Pro Plan - Monthly'
+        YEARLY = 'Pro Plan - Annual', 'Pro Plan - Annual'
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='package')  # Fixed typo
     package_type = models.CharField(
-        max_length=10,
+        max_length=50,
         choices=PackageType.choices,
         default=PackageType.One_Time,
     )
