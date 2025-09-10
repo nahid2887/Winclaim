@@ -83,6 +83,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://charbel.72-60-30-162.sslip.io",
     "http://localhost:5179",
     "https://admin.winaclaim.com",
+    "https://www.winaclaim.com/",
 ]
 
 # CORS_ALLOWED_ORIGINS = [
@@ -91,7 +92,7 @@ CORS_ALLOWED_ORIGINS = [
 #     "https://charbel.72-60-30-162.sslip.io",
 #     "https://admin.winaclaim.com",
 #     "https://localhost:5179",
-#     # Add more origins that use HTTPS if required
+#      Add more origins that use HTTPS if required
 # ]
 
 
