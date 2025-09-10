@@ -96,7 +96,7 @@ CORS_ALLOWED_ORIGINS = [
 # ]
 
 
-CSRF_TRUSTED_ORIGINS = ["https://72.60.30.162", "https://api.winaclaim.com"]
+CSRF_TRUSTED_ORIGINS = ["https://72.60.30.162", "https://api.winaclaim.com", "https://www.winaclaim.com"]
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
