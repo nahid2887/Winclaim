@@ -84,6 +84,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5179",
     "https://admin.winaclaim.com",
     "https://www.winaclaim.com",
+    "https://api.winaclaim.com",
     
 ]
 
