@@ -75,45 +75,41 @@ CORS_ALLOWED_ORIGINS = [
     "http://10.10.13.31:5173",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "http://localhost:5173",  # Added for your frontend
+    "http://localhost:5173",
     "http://localhost:5179",
     "http://10.10.13.32:5179",
     "https://win-a-claim-ai.netlify.app",
     "https://front.winaclaim.com",
     "https://charbel.72-60-30-162.sslip.io",
-    "http://localhost:5179",
     "https://admin.winaclaim.com",
     "https://www.winaclaim.com",
     "https://api.winaclaim.com",
-    
 ]
 
-# CORS_ALLOWED_ORIGINS = [
-#     "https://win-a-claim-ai.netlify.app",
-#     "https://front.winaclaim.com",
-#     "https://charbel.72-60-30-162.sslip.io",
-#     "https://admin.winaclaim.com",
-#     "https://localhost:5179",
-#      Add more origins that use HTTPS if required
-# ]
-
-
-CSRF_TRUSTED_ORIGINS = ["https://72.60.30.162", "https://api.winaclaim.com", "https://www.winaclaim.com" ]
-
-CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
+CSRF_TRUSTED_ORIGINS = [
+    "https://www.winaclaim.com",
+    "https://api.winaclaim.com",
+    "https://72.60.30.162"
 ]
+
 ALLOWED_HOSTS = ["*"]
+
+
+
+# CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOWED_HEADERS = [
+#     'accept',
+#     'accept-encoding',
+#     'authorization',
+#     'content-type',
+#     'dnt',
+#     'origin',
+#     'user-agent',
+#     'x-csrftoken',
+#     'x-requested-with',
+# ]
+# ALLOWED_HOSTS = ["*"]
 
 ROOT_URLCONF = 'claim.urls'
 
