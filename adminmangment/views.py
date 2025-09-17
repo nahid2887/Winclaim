@@ -206,10 +206,10 @@ def terms_policy_views(request):
 
 
     if request.method == 'GET':
-        terms_policies = TermsaAndPolicy.objects.order_by('-created_at').first()
-        if not terms_policies.exists():
+        terms_policy = TermsaAndPolicy.objects.order_by('-created_at').first()
+        if not terms_policy:  # Check if the object is None
             return Response({"message": "No terms and policies found"}, status=status.HTTP_404_NOT_FOUND)
-        serializer = TermsaAndPolicySerializer(terms_policies, many=True)
+        serializer = TermsaAndPolicySerializer(terms_policy)  # Remove many=True for single object
         return Response(serializer.data)
 
     # Only staff users can create or update
@@ -245,10 +245,10 @@ def terms_policy_condition(request):
     user = request.user   
 
     if request.method == 'GET':
-        terms_conditions = TermsaAndcondition.objects.order_by('-created_at').first()
-        if not terms_conditions.exists():
+        terms_condition = TermsaAndcondition.objects.order_by('-created_at').first()
+        if not terms_condition:  # Check if the object is None
             return Response({"message": "No terms and conditions found"}, status=status.HTTP_404_NOT_FOUND)
-        serializer = TermsaAndconditionserializer(terms_conditions, many=True)
+        serializer = TermsaAndconditionserializer(terms_condition)  # Remove many=True for single object
         return Response(serializer.data)
 
     # Only staff users can create or update
