@@ -206,7 +206,7 @@ def terms_policy_views(request):
 
 
     if request.method == 'GET':
-        terms_policies = TermsaAndPolicy.objects.all().order_by('-created_at').first()
+        terms_policies = TermsaAndPolicy.objects.all().order_by('-created_at')
         if not terms_policies.exists():
             return Response({"message": "No terms and policies found"}, status=status.HTTP_404_NOT_FOUND)
         serializer = TermsaAndPolicySerializer(terms_policies, many=True)
@@ -245,7 +245,7 @@ def terms_policy_condition(request):
     user = request.user   
 
     if request.method == 'GET':
-        terms_conditions = TermsaAndcondition.objects.all().order_by('-created_at').first()
+        terms_conditions = TermsaAndcondition.objects.all().order_by('-created_at')
         if not terms_conditions.exists():
             return Response({"message": "No terms and conditions found"}, status=status.HTTP_404_NOT_FOUND)
         serializer = TermsaAndconditionserializer(terms_conditions, many=True)
